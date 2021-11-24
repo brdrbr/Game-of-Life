@@ -58,6 +58,7 @@ int **read_from_file(const char *filename)
             }
         }
     }
+    print_state(currentiteration);
     return currentiteration;
     fclose(x);
 }
@@ -115,11 +116,14 @@ int **next_state(int **state)
     } 
     int r;
     int f;
+    int livecount;
+    int deadcount;
     for (r = 0; r < rows; r++){//these for statements allow us to fill the next iteration matrix
        for (f = 0; f < columns; f++){
            if(state[r][f] == 0){
                if(aliveneighbors[r][f] == 3){
                    nextstate[r][f] = 1;//if the number of neighbors is 3, it will come alive
+                   livecount++;
                }
                else{
                    nextstate[r][f] = 0;//else it will stay dead
@@ -131,10 +135,14 @@ int **next_state(int **state)
                }
                else{
                    nextstate[r][f] = 0;//else it will die
+                   deadcount++;
                }
            }
        }
-    }     
+    }    
+    printf("%d", deadcount);
+    printf("%d", livecount);
+    print_state(nextstate);
     return nextstate;  
 }
 
@@ -153,7 +161,7 @@ void print_state(int **state)
     int i, j;
     printf("\nNext State:\n");
     for(i=0; i<rows; i++){
-        for(j=0; j<cols; j++){
+        for(j=0; j<columns; j++){
             printf("%d", state[i][j]);
         }
         printf("\n");
@@ -166,15 +174,11 @@ int main(int argc, char *argv[])
    input = argv[1];
    const char *output;
    output = argv[2];//gets the inputs of the input path and the output path
-   int i;
-   for(i=0; i < iterations; i++){
-       if(i=0){
-           print_state(input)
-           next_state(read_from_file(input));
-       }
-       else{
+   nextstate(nextstate(nextstate(nextstate(nextstate(read_from_file(input))))));
+   int w;
 
-       }
-   }
-    return 0;
+   /*for(w = 0; w < iterations; w++){
+
+   }*/
+   return 0;
 }               
