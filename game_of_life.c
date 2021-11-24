@@ -6,6 +6,10 @@ int iterations;
 int rows;
 int columns;
 int** currentiteration;
+char** outputmatrix;
+const char *output;
+int livecount;
+int deadcount;
 
 // print the game state
 // after each step you can call this function, add some delay and then clear screen to create a simple game simulation in terminal
@@ -116,21 +120,11 @@ void next_state()
         }
     } 
 
-    char** outputmatrix;//char matrix for converting int cells to actual char outputs
+    //char matrix for converting int cells to actual char outputs
     outputmatrix = (char**)malloc(rows * sizeof(char*));
     for (l = 0; l < rows; l++){
         outputmatrix[l] = (char*) malloc(columns * sizeof(char));
     }
-    for (i = 0; i < rows; i++){
-        for (j = 0; j < columns; j++){
-            if(currentiteration[i][j] == 0){
-                outputmatrix[i][j] = '-';
-            }
-            else{
-                outputmatrix[i][j] = 'X';
-            }
-        }
-    } 
 
     for (i = 0; i < rows; i++){//these for statements allow us to fill the alive neighbors matrix
        for (j = 0; j < columns; j++){
@@ -162,8 +156,6 @@ void next_state()
     } 
     int r;
     int f;
-    int livecount;
-    int deadcount;
     deadcount = 0;
     livecount = 0;
     for (r = 0; r < rows; r++){//these for statements allow us to fill the next iteration matrix
@@ -188,15 +180,25 @@ void next_state()
            }
        }
     }    
-    printf("%d\n", deadcount);
-    printf("%d\n", livecount);
     for (r = 0; r < rows; r++){//these for statements allow us to transform the currentiteration matrix to our actual current iteration from the previous iteration 
                                 //by using the nextstate as a type of "dummy state"
        for (f = 0; f < columns; f++){
            currentiteration[r][f] = nextstate[r][f];
        }
     }    
+    for (i = 0; i < rows; i++){
+        for (j = 0; j < columns; j++){
+            if(currentiteration[i][j] == 0){
+                outputmatrix[i][j] = '-';
+            }
+            else{
+                outputmatrix[i][j] = 'X';
+            }
+        }
+    } 
     //print_state(currentiteration);
+    //printf("%d\n", deadcount);
+    //printf("%d\n", livecount);
     //print_statechar(outputmatrix);
 
 }
@@ -212,12 +214,17 @@ int main(int argc, char *argv[])
 {
    const char *input;
    input = argv[1];
-   const char *output;
    output = argv[2];//gets the inputs of the input path and the output path
    read_from_file(input);
    int w;
    for(w = 0; w < iterations; w++){
        next_state();
+       char slive[12];
+       char sdead[12];
+       sprintf(slive,"%d", livecount);
+       sprintf(sdead,"%d", deadcount);
+       FILE *y;
+        y = fopen(output,"w");
    }
    return 0;
 }               
