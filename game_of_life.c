@@ -147,14 +147,14 @@ bool is_oscillator(char **pattern, int max_steps)
 
 // print the game state
 // after each step you can call this function, add some delay and then clear screen to create a simple game simulation in terminal
-void print_state(char **state, int rows, int cols)
+void print_state(int **state)
 {
 
     int i, j;
     printf("\nNext State:\n");
     for(i=0; i<rows; i++){
         for(j=0; j<cols; j++){
-            printf("%c", state[i][j]);
+            printf("%d", state[i][j]);
         }
         printf("\n");
     }
@@ -166,7 +166,15 @@ int main(int argc, char *argv[])
    input = argv[1];
    const char *output;
    output = argv[2];//gets the inputs of the input path and the output path
-   //with open (input,"r") as f:
-   next_state(read_from_file(input));
+   int i;
+   for(i=0; i < iterations; i++){
+       if(i=0){
+           print_state(input)
+           next_state(read_from_file(input));
+       }
+       else{
+
+       }
+   }
     return 0;
 }               
