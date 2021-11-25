@@ -1,15 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-
+#include <string.h>
 int iterations;
 int rows;
 int columns;
 int** currentiteration;
 char** outputmatrix;
-const char *output;
+char *output;
 int livecount;
 int deadcount;
+char dummyoutput[1028];
 
 // print the game state
 // after each step you can call this function, add some delay and then clear screen to create a simple game simulation in terminal
@@ -219,12 +220,38 @@ int main(int argc, char *argv[])
    int w;
    for(w = 0; w < iterations; w++){
        next_state();
-       char slive[12];
-       char sdead[12];
+       strcpy(dummyoutput, output);//
+        char slive[12];
+        char sdead[12];
        sprintf(slive,"%d", livecount);
        sprintf(sdead,"%d", deadcount);
-       FILE *y;
-        y = fopen(output,"w");
+       char iterationno[12];
+       int q;
+       q = w + 1;
+        sprintf(iterationno,"%d", q);
+        char aa[] = "/";
+        char bb[] = ".txt";
+        strcat(aa, iterationno);
+        strcat(aa, bb);
+        strcat(dummyoutput, aa);//
+        FILE *y;
+        y = fopen(dummyoutput,"w");
+        fputs(sdead,y);
+        fputc('\n', y);
+        fputs(slive,y);
+        fputc('\n', y);
+        int c;
+        int v;
+        for (c = 0; c < rows; c++){
+            for (v = 0; v < columns; v++){
+                char *statepointer;
+                statepointer = &outputmatrix[c][v];
+                fputs(statepointer,y);//fix this for statement why does it print 20 times??
+            }
+            fputs("bruh",y);
+            fputc('\n', y);
+        }
+        fclose(y);
    }
    return 0;
 }               
