@@ -193,7 +193,7 @@ void next_state()
                 outputmatrix[i][j] = '-';
             }
             else{
-                outputmatrix[i][j] = 'X';
+                outputmatrix[i][j] = 'X';//converts the 0 and 1s to - and Xs in a new matrix
             }
         }
     } 
@@ -224,7 +224,7 @@ int main(int argc, char *argv[])
         char slive[12];
         char sdead[12];
        sprintf(slive,"%d", livecount);
-       sprintf(sdead,"%d", deadcount);
+       sprintf(sdead,"%d", deadcount);//converts int counts to char *s
        char iterationno[12];
        int q;
        q = w + 1;
@@ -233,22 +233,19 @@ int main(int argc, char *argv[])
         char bb[] = ".txt";
         strcat(aa, iterationno);
         strcat(aa, bb);
-        strcat(dummyoutput, aa);//
+        strcat(dummyoutput, aa);//forms an actual path that includes the iterationnumber.txt
         FILE *y;
         y = fopen(dummyoutput,"w");
         fputs(sdead,y);
         fputc('\n', y);
         fputs(slive,y);
-        fputc('\n', y);
+        fputc('\n', y);//outputs the counts first
         int c;
         int v;
         for (c = 0; c < rows; c++){
             for (v = 0; v < columns; v++){
-                char *statepointer;
-                statepointer = &outputmatrix[c][v];
-                fputs(statepointer,y);//fix this for statement why does it print 20 times??
+                fprintf(y,"%c",outputmatrix[c][v]);//output the state for the every cell of the matrix
             }
-            fputs("bruh",y);
             fputc('\n', y);
         }
         fclose(y);
